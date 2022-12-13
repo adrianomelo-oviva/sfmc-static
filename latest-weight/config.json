@@ -15,7 +15,7 @@
     "execute": {
       "inArguments": [
         {
-          "sample": 10
+          "patientUserId": null
         }
       ],
       "outArguments": [],
