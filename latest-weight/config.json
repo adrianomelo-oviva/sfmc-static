@@ -19,7 +19,7 @@
         }
       ],
       "outArguments": [],
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net",
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_execute",
       "timeout": 10000,
       "retryCount": 3,
       "retryDelay": 1000,
@@ -28,10 +28,13 @@
   },
   "configurationArguments": {
     "publish": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_publish"
     },
     "validate": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_validate"
+    },
+    "validate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_save"
     }
   },
   "schema": {

@@ -1,12 +1,61 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Latest weight</title>
+  <meta charset="utf-8" />
+  <title>Custom Journey Builder Activity</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript">
+    (function () {
+      var config = {
+        baseUrl: "",
+      };
+
+      var dependencies = ["customActivity"];
+
+      require(config, dependencies);
+    })();
+  </script>
+
+  <!--Styles-->
+  <style type="text/css">
+    body {
+      padding: 20px;
+      margin: 0;
+    }
+    .step {
+      display: none;
+    }
+    #step1 {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-<div id="root">
-  Hi
+<div id="step1" class="step">
+  Select your SMS message:
+  <select id="select1">
+    <option value="">Select an option</option>
+    <option value="someMessage">Some SMS</option>
+    <option value="anotherMessage">Another SMS</option>
+    <option value="thirdMessage">Third SMS</option>
+    <option value="unknownMessage">Unknown SMS</option>
+  </select>
+
+  <button id="toggleLastStep">Toggle Last Step</button>
+</div>
+<div id="step2" class="step">
+  Here's a second page with some info on it.
+</div>
+<div id="step3" class="step">
+  You chose the message:
+  <div id="message"></div>
+</div>
+<div id="step4" class="step">
+  Hey, here's a fourth step, just for you. Toggle this on or off from step
+  1.
 </div>
 </body>
 </html>
