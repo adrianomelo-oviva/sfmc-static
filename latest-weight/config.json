@@ -42,8 +42,14 @@
     "stop": {
       "url": "https://eoc48mye7dsh09i.m.pipedream.net/_stop"
     },
-    "TestSave": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_test_save"
+    "testSave": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testSave"
+    },
+    "testPublish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testPublish"
+    },
+    "testValidate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testValidate"
     }
   },
   "schema": {
