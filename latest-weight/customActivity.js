@@ -192,8 +192,8 @@ define(["postmonger"], function (Postmonger) {
     payload["arguments"].execute.inArguments = [
         { message: value,
           patientUserId: 'abc',
-          test: "%%= Format(Account:DateNextAppointment__c, \"dd.MM\") =%%",
-          test1: "%%= Format(Now(), \"dd.MM\") =%%"
+          test: "{{%%= Format(Account:DateNextAppointment__c, \"dd.MM\") =%%}}",
+          test1: "{{%%= Format(Now(), \"dd.MM\") =%%}}"
         }];
 
     payload["metaData"].isConfigured = true;
