@@ -33,7 +33,7 @@
     "validate": {
       "url": "https://eoc48mye7dsh09i.m.pipedream.net/_validate"
     },
-    "validate": {
+    "save": {
       "url": "https://eoc48mye7dsh09i.m.pipedream.net/_save"
     }
   },
