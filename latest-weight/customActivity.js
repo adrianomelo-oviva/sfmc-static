@@ -189,7 +189,12 @@ define(["postmonger"], function (Postmonger) {
     // may be overridden as desired.
     payload.name = name;
 
-    payload["arguments"].execute.inArguments = [{ message: value, patientUserId: 'abc' }];
+    payload["arguments"].execute.inArguments = [
+        { message: value,
+          patientUserId: 'abc',
+          test: "%%= Format(Account:DateNextAppointment__c, \"dd.MM\") =%%",
+          test1: "%%= Format(Now(), \"dd.MM\") =%%"
+        }];
 
     payload["metaData"].isConfigured = true;
 
