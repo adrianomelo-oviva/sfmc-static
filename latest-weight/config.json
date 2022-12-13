@@ -1,0 +1,71 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "images/icon.png",
+    "category": "Insights"
+  },
+  "type": "Rest",
+  "lang": {
+    "en-US": {
+      "name": "Insight",
+      "description": "Insight"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "inArguments": [
+        {
+          "sample": 10
+        }
+      ],
+      "outArguments": [],
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net",
+      "timeout": 10000,
+      "retryCount": 3,
+      "retryDelay": 1000,
+      "concurrentRequests": 5
+    }
+  },
+  "configurationArguments": {
+    "publish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net"
+    },
+    "validate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net"
+    }
+  },
+  "schema": {
+    "arguments": {
+      "execute": {
+        "inArguments": [
+          {
+            "patientUserId": {
+              "dataType": "Text",
+              "direction": "in",
+              "access": "visible"
+            }
+          }
+        ],
+        "outArguments": [
+          {
+            "value": {
+              "dataType": "Number",
+              "direction": "out",
+              "access": "visible"
+            },
+            "created_at": {
+              "dataType": "Date",
+              "direction": "out",
+              "access": "visible"
+            },
+            "is_present": {
+              "dataType": "Boolean",
+              "direction": "out",
+              "access": "visible"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
