@@ -7,8 +7,8 @@
   "type": "Rest",
   "lang": {
     "en-US": {
-      "name": "Insight",
-      "description": "Insight"
+      "name": "Latest weight",
+      "description": "Latest weight"
     }
   },
   "arguments": {
