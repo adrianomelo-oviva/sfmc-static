@@ -71,6 +71,11 @@
               "direction": "out",
               "access": "visible"
             },
+            "value_decimal": {
+              "dataType": "Decimal",
+              "direction": "out",
+              "access": "visible"
+            },
             "created_at": {
               "dataType": "Date",
               "direction": "out",
