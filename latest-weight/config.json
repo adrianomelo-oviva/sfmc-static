@@ -20,6 +20,8 @@
       ],
       "outArguments": [],
       "url": "https://eoc48mye7dsh09i.m.pipedream.net/_execute",
+      "useJwt":true,
+      "customerKey":"CustomActivityJWTKey",
       "timeout": 10000,
       "retryCount": 3,
       "retryDelay": 1000,
@@ -28,28 +30,36 @@
   },
   "configurationArguments": {
     "publish": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_publish"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_publish",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "validate": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_validate"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_validate",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "save": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_save"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_save",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "unpublish": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_unpublish"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_unpublish",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "stop": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_stop"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_stop",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "testSave": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testSave"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testSave",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "testPublish": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testPublish"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testPublish",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     },
     "testValidate": {
-      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testValidate"
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testValidate",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
     }
   },
   "schema": {
