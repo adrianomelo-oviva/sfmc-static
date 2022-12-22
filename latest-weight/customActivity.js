@@ -214,9 +214,9 @@ define(["postmonger"], function (Postmonger) {
         schema: schema.map(x => ({...x, test: "{{" + x.key + "}}"}))
     }];
 
-    // payload["metaData"].isConfigured = true;
+    payload["metaData"].isConfigured = true;
 
-    // connection.trigger("updateActivity", payload);
+    connection.trigger("updateActivity", payload);
   }
 
   function getMessage() {
