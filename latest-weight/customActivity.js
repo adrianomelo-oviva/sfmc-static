@@ -196,8 +196,8 @@ define(["postmonger"], function (Postmonger) {
           patientUserId: 'ddabbb91-f256-4748-9d69-453f82ccc942',
           daysSince: 12,
           daysUntil: 2,
-          personContactId: '{{OCS_PathwayState__c:AccountId__r:PersonContactId}}',
-          progress: '{{OCS_PathwayState__c:Progress__c}}'
+          personContactId: '{{Event.DEAudience-a145fcce-6a7e-127d-04a9-4c2aa6c46242.OCS_PathwayState__c:PatientUUID__c}}',
+          progress: '{{OEvent.DEAudience-a145fcce-6a7e-127d-04a9-4c2aa6c46242.OCS_PathwayState__c:Progress__c}}'
         }
     }];
 
