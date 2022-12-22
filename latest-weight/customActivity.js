@@ -191,6 +191,7 @@ define(["postmonger"], function (Postmonger) {
 
     payload["arguments"].execute.inArguments = [{
         query_id: '7df0a6ea-c1f5-48cf-8a6d-5b9c68b6484a',
+        progress: '{{OCS_PathwayState__c:Progress__c}}',
         parameters: {
           patientUserId: 'ddabbb91-f256-4748-9d69-453f82ccc942',
           daysSince: 12,
