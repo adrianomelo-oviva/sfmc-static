@@ -23,6 +23,13 @@ define(["postmonger"], function (Postmonger) {
   connection.on("clickedBack", onClickedBack);
   connection.on("gotoStep", onGotoStep);
 
+  var schema = [];
+  connection.on('requestedSchema', function (data) {
+    console.log(data)
+    schema = data;
+  });
+  connection.trigger('requestSchema');
+
   function onRender() {
     // JB will respond the first time 'ready' is called with 'initActivity'
     connection.trigger("ready");
@@ -75,6 +82,8 @@ define(["postmonger"], function (Postmonger) {
         }
       });
     });
+
+
 
     // If there is no message selected, disable the next button
     if (!message) {
@@ -180,14 +189,14 @@ define(["postmonger"], function (Postmonger) {
   }
 
   function save() {
-    var name = $("#select1").find("option:selected").html();
-    var value = getMessage();
+    // var name = $("#select1").find("option:selected").html();
+    // var value = getMessage();
 
     // 'payload' is initialized on 'initActivity' above.
     // Journey Builder sends an initial payload with defaults
     // set by this activity's config.json file.  Any property
     // may be overridden as desired.
-    payload.name = name;
+    // payload.name = name;
 
     payload["arguments"].execute.inArguments = [{
         query_id: '7df0a6ea-c1f5-48cf-8a6d-5b9c68b6484a',
@@ -201,12 +210,13 @@ define(["postmonger"], function (Postmonger) {
           daysUntil: 2,
           personContactId: '{{Event.DEAudience-a145fcce-6a7e-127d-04a9-4c2aa6c46242.OCS_PathwayState__c:PatientUUID__c}}',
           progress: '{{OEvent.DEAudience-a145fcce-6a7e-127d-04a9-4c2aa6c46242.OCS_PathwayState__c:Progress__c}}'
-        }
+        },
+        schema: schema.map(x => ({...x, test: "{{" + x.key + "}}"}))
     }];
 
-    payload["metaData"].isConfigured = true;
+    // payload["metaData"].isConfigured = true;
 
-    connection.trigger("updateActivity", payload);
+    // connection.trigger("updateActivity", payload);
   }
 
   function getMessage() {
