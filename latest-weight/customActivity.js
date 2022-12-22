@@ -200,12 +200,12 @@ define(["postmonger"], function (Postmonger) {
 
     payload["arguments"].execute.inArguments = [{
         query_id: '7df0a6ea-c1f5-48cf-8a6d-5b9c68b6484a',
-        patientUserId: 'ddabbb91-f256-4748-9d69-453f82ccc942',
+        patient_user_id: 'ddabbb91-f256-4748-9d69-453f82ccc942',
         '7df0a6ea-c1f5-48cf-8a6d-5b9c68b6484a': '{{Event.DEAudience-a145fcce-6a7e-127d-04a9-4c2aa6c46242.OCS_PathwayState__c:PatientUUID__c}}',
-        daysSince: 12,
-        daysUntil: 2,
+        days_since: 12,
+        days_until: 2,
         // anotherTest: '{{Interaction.REST-4.value}}',
-        schema
+        // schema
     }];
 
     payload["metaData"].isConfigured = true;
