@@ -189,12 +189,18 @@ define(["postmonger"], function (Postmonger) {
     // may be overridden as desired.
     payload.name = name;
 
-    payload["arguments"].execute.inArguments = [
-        { message: value,
-          patientUserId: 'abc',
-          test: "{{%%= Format(Account:DateNextAppointment__c, \"dd.MM\") =%%}}",
-          test1: "{{%%= Format(Now(), \"dd.MM\") =%%}}"
-        }];
+    payload["arguments"].execute.inArguments = {
+      query: {
+        id: '7df0a6ea-c1f5-48cf-8a6d-5b9c68b6484a',
+        parameters: {
+          patientUserId: 'ddabbb91-f256-4748-9d69-453f82ccc942',
+          daysSince: 12,
+          daysUntil: 2,
+          personContactId: '{{OCS_PathwayState__c:AccountId__r:PersonContactId}}',
+          progress: '{{OCS_PathwayState__c:Progress__c}}'
+        }
+      }
+    };
 
     payload["metaData"].isConfigured = true;
 
