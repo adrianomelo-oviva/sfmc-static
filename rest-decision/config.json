@@ -1,0 +1,158 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "images/icon.svg",
+    "category": "Insights",
+    "backgroundColor": "#032e61"
+  },
+  "type": "RestDecision",
+  "lang": {
+    "en-US": {
+      "name": "Customer Score Split",
+      "description": "Split journey based on customer scoring criteria",
+      "highScoreLabel": "High Score",
+      "mediumScoreLabel": "Medium Score",
+      "lowScoreLabel": "Low Score",
+      "remainderLabel": "Other"
+    }
+  },
+  "outcomes": [
+    {
+      "key": "OUTCOME-1",
+      "arguments": {
+        "branchResult": "high_score"
+      },
+      "metaData": {
+        "label": "High Score"
+      }
+    },
+    {
+      "key": "OUTCOME-2",
+      "arguments": {
+        "branchResult": "medium_score"
+      },
+      "metaData": {
+        "label": "Medium Score"
+      }
+    },
+    {
+      "key": "OUTCOME-3",
+      "arguments": {
+        "branchResult": "low_score"
+      },
+      "metaData": {
+        "label": "Low Score"
+      }
+    },
+    {
+      "key": "OUTCOME-4",
+      "arguments": {
+        "branchResult": "remainder"
+      },
+      "metaData": {
+        "label": "Other"
+      }
+    }
+  ],
+  "arguments": {
+    "execute": {
+      "inArguments": [
+        {
+          "patientUserId": null
+        },
+        {
+          "scoreType": "{{scoreType}}"
+        }
+      ],
+      "outArguments": [
+        {
+          "branchResult": {
+            "dataType": "Text",
+            "direction": "out",
+            "access": "visible"
+          }
+        }
+      ],
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_execute",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey",
+      "timeout": 10000,
+      "retryCount": 3,
+      "retryDelay": 1000,
+      "concurrentRequests": 5
+    }
+  },
+  "configurationArguments": {
+    "publish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_publish",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "validate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_validate",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "save": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_save",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "unpublish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_unpublish",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "stop": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_stop",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "testSave": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testSave",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "testPublish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testPublish",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    },
+    "testValidate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testValidate",
+      "useJwt": true,
+      "customerKey": "CustomActivityJWTKey"
+    }
+  },
+  "schema": {
+    "arguments": {
+      "execute": {
+        "inArguments": [
+          {
+            "patientUserId": {
+              "dataType": "Text",
+              "direction": "in",
+              "access": "visible"
+            }
+          },
+          {
+            "scoreType": {
+              "dataType": "Text",
+              "direction": "in",
+              "access": "visible"
+            }
+          }
+        ],
+        "outArguments": [
+          {
+            "branchResult": {
+              "dataType": "Text",
+              "direction": "out",
+              "access": "visible"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
