@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Customer Score Split Activity</title>
+  <title>Simple Score Split Activity</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -25,44 +25,49 @@
       var connection = new Postmonger.Session();
 
       var payload = {};
-      var steps = [
-        { "label": "Configure Split", "key": "step1" },
-        { "label": "Select Score Type", "key": "step2" },
-        { "label": "Review", "key": "step3" }
-      ];
-      var currentStep = steps[0].key;
 
       $(window).ready(onRender);
 
       connection.on('initActivity', initialize);
-      connection.on('requestedTokens', onGetTokens);
-      connection.on('requestedEndpoints', onGetEndpoints);
-      connection.on('clickedNext', onClickedNext);
-      connection.on('clickedBack', onClickedBack);
-      connection.on('gotoStep', onGotoStep);
+      connection.on('clickedNext', save);
 
       function onRender() {
         connection.trigger('ready');
-
-        // Configure UI
-        $('#select-score-type').change(function() {
-          var selectedScoreType = $('#select-score-type').val();
-          $('#selected-score-type').text(selectedScoreType);
-          updateVisiblePaths(selectedScoreType);
+        
+        // Setup button handlers
+        $('#btn-engagement').click(function() {
+          setConfiguration('engagement');
+        });
+        
+        $('#btn-retention').click(function() {
+          setConfiguration('retention');
+        });
+        
+        $('#btn-conversion').click(function() {
+          setConfiguration('conversion');
         });
       }
 
-      function updateVisiblePaths(scoreType) {
-        // Show/hide paths based on score type
-        if (scoreType === 'engagement') {
-          $('#high-path-config, #medium-path-config, #low-path-config').show();
-        } else if (scoreType === 'retention') {
-          $('#high-path-config, #medium-path-config').show();
-          $('#low-path-config').hide();
-        } else if (scoreType === 'conversion') {
-          $('#high-path-config, #low-path-config').show();
-          $('#medium-path-config').hide();
+      function setConfiguration(configType) {
+        $('#selected-config').text(configType);
+        
+        // Update visible outcome descriptions based on configuration
+        if (configType === 'engagement') {
+          $('.outcome-display').show();
+        } else if (configType === 'retention') {
+          $('.outcome-display').show();
+          $('#low-outcome').hide();
+        } else if (configType === 'conversion') {
+          $('.outcome-display').show();
+          $('#medium-outcome').hide();
         }
+        
+        // Enable the done button
+        connection.trigger('updateButton', {
+          button: 'next',
+          text: 'done',
+          enabled: true
+        });
       }
 
       function initialize(data) {
@@ -70,106 +75,23 @@
           payload = data;
         }
         
-        var hasInArguments = Boolean(
-          payload['arguments'] &&
-          payload['arguments'].execute &&
-          payload['arguments'].execute.inArguments &&
-          payload['arguments'].execute.inArguments.length > 0
-        );
-
-        var inArguments = hasInArguments ? payload['arguments'].execute.inArguments : {};
-
-        $.each(inArguments, function(index, inArgument) {
-          $.each(inArgument, function(key, val) {
-            if (key === 'scoreType') {
-              $('#select-score-type').val(val);
-              $('#selected-score-type').text(val);
-              updateVisiblePaths(val);
-            }
-          });
-        });
-
         connection.trigger('updateButton', {
           button: 'next',
-          text: 'next',
-          enabled: true
+          text: 'done',
+          enabled: false
         });
-      }
-
-      function onGetTokens(tokens) {
-        // Save tokens
-      }
-
-      function onGetEndpoints(endpoints) {
-        // Save endpoints
-      }
-
-      function onClickedNext() {
-        if (currentStep.key === 'step3' || (currentStep.key === 'step2' && steps.length === 2)) {
-          save();
-        } else {
-          connection.trigger('nextStep');
-        }
-      }
-
-      function onClickedBack() {
-        connection.trigger('prevStep');
-      }
-
-      function onGotoStep(step) {
-        showStep(step);
-        connection.trigger('ready');
-      }
-
-      function showStep(step) {
-        currentStep = step;
-        $('.step').hide();
-        
-        switch(currentStep.key) {
-          case 'step1':
-            $('#step1').show();
-            connection.trigger('updateButton', {
-              button: 'next',
-              enabled: true
-            });
-            break;
-          case 'step2':
-            $('#step2').show();
-            connection.trigger('updateButton', {
-              button: 'back',
-              visible: true
-            });
-            connection.trigger('updateButton', {
-              button: 'next',
-              text: 'next',
-              visible: true,
-              enabled: Boolean($('#select-score-type').val())
-            });
-            break;
-          case 'step3':
-            $('#step3').show();
-            connection.trigger('updateButton', {
-              button: 'back',
-              visible: true
-            });
-            connection.trigger('updateButton', {
-              button: 'next',
-              text: 'done',
-              visible: true
-            });
-            break;
-        }
       }
 
       function save() {
-        var scoreType = $('#select-score-type').val();
-
+        var configType = $('#selected-config').text();
+        
+        // Set the input arguments
         payload['arguments'].execute.inArguments = [
           { "patientUserId": "{{Contact.Key}}" },
-          { "scoreType": scoreType }
+          { "scoreType": configType }
         ];
         
-        // Ensure the metadata is set to show our activity as configured
+        // Ensure the metadata is set
         if (!payload.metaData) {
           payload.metaData = {};
         }
@@ -187,130 +109,83 @@
       margin: 0;
       font-family: Arial, sans-serif;
     }
-    .step {
+    .config-button {
+      background-color: #032e61;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .config-button:hover {
+      background-color: #054a9e;
+    }
+    .outcomes-container {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .outcome-display {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-left: 4px solid #032e61;
       display: none;
     }
-    #step1 {
-      display: block;
+    h3 {
+      color: #032e61;
     }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    select {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .path-config {
-      margin-top: 10px;
-      padding: 15px;
-      border: 1px solid #eee;
-      border-radius: 4px;
-    }
-    .outcome-path {
-      margin-bottom: 15px;
+    .selection-info {
+      margin: 20px 0;
       padding: 10px;
-      background-color: #f9f9f9;
+      background-color: #e8f4ff;
       border-radius: 4px;
-      border-left: 4px solid #032e61;
-    }
-    .outcome-path h4 {
-      margin-top: 0;
-      color: #032e61;
-    }
-    .section-title {
-      color: #032e61;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
     }
   </style>
 </head>
 <body>
-  <div id="step1" class="step">
-    <h2>Customer Score Split</h2>
-    <p>This activity will split the journey based on customer scoring criteria.</p>
-    <p>The following split paths are available:</p>
-    <ul>
-      <li><strong>High Score</strong> - Contacts with high scores</li>
-      <li><strong>Medium Score</strong> - Contacts with medium scores</li>
-      <li><strong>Low Score</strong> - Contacts with low scores</li>
-      <li><strong>Other</strong> - Contacts that don't match any criteria</li>
-    </ul>
-    <p>Click Next to configure which score type to use.</p>
+  <h2>Customer Score Split Configuration</h2>
+  
+  <div>
+    <p>Select a configuration by clicking one of the buttons below:</p>
+    <button id="btn-engagement" class="config-button">Engagement Scores (3 paths)</button>
+    <button id="btn-retention" class="config-button">Retention Scores (2 paths)</button>
+    <button id="btn-conversion" class="config-button">Conversion Scores (2 paths)</button>
   </div>
-
-  <div id="step2" class="step">
-    <h2>Select Score Type</h2>
-    <div class="form-group">
-      <label for="select-score-type">Score Type:</label>
-      <select id="select-score-type">
-        <option value="">Select a score type</option>
-        <option value="engagement">Engagement Score</option>
-        <option value="retention">Retention Score</option>
-        <option value="conversion">Conversion Score</option>
-      </select>
+  
+  <div class="selection-info">
+    <p><strong>Selected Configuration:</strong> <span id="selected-config">None</span></p>
+  </div>
+  
+  <div class="outcomes-container">
+    <h3>Outcome Paths</h3>
+    <p>The following outcomes will be available based on your selection:</p>
+    
+    <div id="high-outcome" class="outcome-display">
+      <h4>High Score Path</h4>
+      <p>Branch Result: <code>high_score</code></p>
     </div>
     
-    <h3 class="section-title">Available Paths</h3>
-    <p>The following paths will be available based on your selected score type:</p>
-    
-    <div class="path-config" id="high-path-config">
-      <div class="outcome-path">
-        <h4>High Score Path</h4>
-        <p>Contacts with high scores will follow this path</p>
-      </div>
+    <div id="medium-outcome" class="outcome-display">
+      <h4>Medium Score Path</h4>
+      <p>Branch Result: <code>medium_score</code></p>
     </div>
     
-    <div class="path-config" id="medium-path-config">
-      <div class="outcome-path">
-        <h4>Medium Score Path</h4>
-        <p>Contacts with medium scores will follow this path</p>
-      </div>
+    <div id="low-outcome" class="outcome-display">
+      <h4>Low Score Path</h4>
+      <p>Branch Result: <code>low_score</code></p>
     </div>
     
-    <div class="path-config" id="low-path-config">
-      <div class="outcome-path">
-        <h4>Low Score Path</h4>
-        <p>Contacts with low scores will follow this path</p>
-      </div>
-    </div>
-    
-    <div class="path-config">
-      <div class="outcome-path">
-        <h4>Other Path (Remainder)</h4>
-        <p>Contacts that don't match any criteria will follow this path</p>
-      </div>
+    <div id="remainder-outcome" class="outcome-display">
+      <h4>Remainder Path</h4>
+      <p>Branch Result: <code>remainder</code></p>
     </div>
   </div>
-
-  <div id="step3" class="step">
-    <h2>Review Configuration</h2>
-    <p>You've selected the following configuration:</p>
-    <p><strong>Score Type:</strong> <span id="selected-score-type">Not selected</span></p>
-    
-    <p>When this activity runs in the journey, contacts will be split based on their scores:</p>
-    <ul>
-      <li><strong>High Score:</strong> Contacts with high scores</li>
-      <li><strong>Medium Score:</strong> Contacts with medium scores</li>
-      <li><strong>Low Score:</strong> Contacts with low scores</li>
-      <li><strong>Other:</strong> Contacts that don't match any criteria</li>
-    </ul>
-    
-    <p><strong>Note:</strong> The API endpoint should return <code>branchResult</code> with one of these values:</p>
-    <ul>
-      <li><code>high_score</code></li>
-      <li><code>medium_score</code></li>
-      <li><code>low_score</code></li>
-      <li><code>remainder</code></li>
-    </ul>
+  
+  <div>
+    <p>Click "Done" when you've selected your configuration.</p>
   </div>
 </body>
 </html>
