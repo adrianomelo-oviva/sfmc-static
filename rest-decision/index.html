@@ -51,16 +51,138 @@
       function setConfiguration(configType) {
         $('#selected-config').text(configType);
         
-        // Update visible outcome descriptions based on configuration
+        // Clear previous outcome data
+        $('.branch-result').empty();
+        $('.outcome-display').hide();
+        
+        // Update payload with appropriate outcomes based on configuration type
         if (configType === 'engagement') {
-          $('.outcome-display').show();
+          // Show all outcomes with engagement-specific values
+          updateOutcome('high', 'high_engagement', 'High Engagement Score');
+          updateOutcome('medium', 'medium_engagement', 'Medium Engagement Score');
+          updateOutcome('low', 'low_engagement', 'Low Engagement Score');
+          updateOutcome('remainder', 'remainder', 'Other Engagement Cases');
+          
+          // Update the payload outcomes
+          payload.outcomes = [
+            {
+              "key": "OUTCOME-1",
+              "arguments": {
+                "branchResult": "high_engagement"
+              },
+              "metaData": {
+                "label": "High Engagement"
+              }
+            },
+            {
+              "key": "OUTCOME-2",
+              "arguments": {
+                "branchResult": "medium_engagement"
+              },
+              "metaData": {
+                "label": "Medium Engagement"
+              }
+            },
+            {
+              "key": "OUTCOME-3",
+              "arguments": {
+                "branchResult": "low_engagement"
+              },
+              "metaData": {
+                "label": "Low Engagement"
+              }
+            },
+            {
+              "key": "OUTCOME-4",
+              "arguments": {
+                "branchResult": "remainder"
+              },
+              "metaData": {
+                "label": "Other"
+              }
+            }
+          ];
+          
         } else if (configType === 'retention') {
-          $('.outcome-display').show();
-          $('#low-outcome').hide();
+          // Show only high, medium, and remainder for retention
+          updateOutcome('high', 'high_retention', 'High Retention Score');
+          updateOutcome('medium', 'medium_retention', 'Medium Retention Score');
+          updateOutcome('remainder', 'remainder', 'Other Retention Cases');
+          
+          // Update the payload outcomes
+          payload.outcomes = [
+            {
+              "key": "OUTCOME-1",
+              "arguments": {
+                "branchResult": "high_retention"
+              },
+              "metaData": {
+                "label": "High Retention"
+              }
+            },
+            {
+              "key": "OUTCOME-2",
+              "arguments": {
+                "branchResult": "medium_retention"
+              },
+              "metaData": {
+                "label": "Medium Retention"
+              }
+            },
+            {
+              "key": "OUTCOME-4",
+              "arguments": {
+                "branchResult": "remainder"
+              },
+              "metaData": {
+                "label": "Other"
+              }
+            }
+          ];
+          
         } else if (configType === 'conversion') {
-          $('.outcome-display').show();
-          $('#medium-outcome').hide();
+          // Show only high, low, and remainder for conversion
+          updateOutcome('high', 'high_conversion', 'High Conversion Score');
+          updateOutcome('low', 'low_conversion', 'Low Conversion Score');
+          updateOutcome('remainder', 'remainder', 'Other Conversion Cases');
+          
+          // Update the payload outcomes
+          payload.outcomes = [
+            {
+              "key": "OUTCOME-1",
+              "arguments": {
+                "branchResult": "high_conversion"
+              },
+              "metaData": {
+                "label": "High Conversion"
+              }
+            },
+            {
+              "key": "OUTCOME-3",
+              "arguments": {
+                "branchResult": "low_conversion"
+              },
+              "metaData": {
+                "label": "Low Conversion"
+              }
+            },
+            {
+              "key": "OUTCOME-4",
+              "arguments": {
+                "branchResult": "remainder"
+              },
+              "metaData": {
+                "label": "Other"
+              }
+            }
+          ];
         }
+        
+        // Update the schema to match the outcomes
+        updateSchema(configType);
+        
+        // Show config summary
+        $('#config-summary').html(JSON.stringify(payload.outcomes, null, 2));
         
         // Enable the done button
         connection.trigger('updateButton', {
@@ -68,6 +190,42 @@
           text: 'done',
           enabled: true
         });
+      }
+      
+      function updateOutcome(type, branchResult, label) {
+        // Show the outcome and update its branch result
+        $('#' + type + '-outcome').show()
+          .find('.outcome-title').text(label);
+        $('#' + type + '-outcome .branch-result').text(branchResult);
+      }
+      
+      function updateSchema(configType) {
+        // Update the schema to specify the expected outputs
+        if (!payload.schema) {
+          payload.schema = {};
+        }
+        
+        if (!payload.schema.arguments) {
+          payload.schema.arguments = {};
+        }
+        
+        if (!payload.schema.arguments.execute) {
+          payload.schema.arguments.execute = {
+            inArguments: [],
+            outArguments: []
+          };
+        }
+        
+        // Set the outArguments based on configuration type
+        payload.schema.arguments.execute.outArguments = [
+          {
+            "branchResult": {
+              "dataType": "Text",
+              "direction": "out",
+              "access": "visible"
+            }
+          }
+        ];
       }
 
       function initialize(data) {
@@ -143,6 +301,19 @@
       background-color: #e8f4ff;
       border-radius: 4px;
     }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: 200px;
+    }
+    code {
+      font-family: monospace;
+      background-color: #e0e0e0;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
   </style>
 </head>
 <body>
@@ -164,24 +335,30 @@
     <p>The following outcomes will be available based on your selection:</p>
     
     <div id="high-outcome" class="outcome-display">
-      <h4>High Score Path</h4>
-      <p>Branch Result: <code>high_score</code></p>
+      <h4 class="outcome-title">High Score Path</h4>
+      <p>Branch Result: <code class="branch-result">high_score</code></p>
     </div>
     
     <div id="medium-outcome" class="outcome-display">
-      <h4>Medium Score Path</h4>
-      <p>Branch Result: <code>medium_score</code></p>
+      <h4 class="outcome-title">Medium Score Path</h4>
+      <p>Branch Result: <code class="branch-result">medium_score</code></p>
     </div>
     
     <div id="low-outcome" class="outcome-display">
-      <h4>Low Score Path</h4>
-      <p>Branch Result: <code>low_score</code></p>
+      <h4 class="outcome-title">Low Score Path</h4>
+      <p>Branch Result: <code class="branch-result">low_score</code></p>
     </div>
     
     <div id="remainder-outcome" class="outcome-display">
-      <h4>Remainder Path</h4>
-      <p>Branch Result: <code>remainder</code></p>
+      <h4 class="outcome-title">Remainder Path</h4>
+      <p>Branch Result: <code class="branch-result">remainder</code></p>
     </div>
+  </div>
+  
+  <div class="outcomes-container">
+    <h3>Configuration JSON</h3>
+    <p>This is the configuration that will be sent to Journey Builder:</p>
+    <pre id="config-summary">No configuration selected</pre>
   </div>
   
   <div>
