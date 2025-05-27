@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Custom Journey Builder Activity</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript">
+    (function () {
+      var config = {
+        baseUrl: "",
+      };
+
+      var dependencies = ["customActivity"];
+
+      require(config, dependencies);
+    })();
+  </script>
+
+  <!--Styles-->
+  <style type="text/css">
+    body {
+      padding: 20px;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .step {
+      display: none;
+    }
+    #step1 {
+      display: block;
+    }
+    .outargs-section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .outargs-buttons {
+      margin: 10px 0;
+    }
+    .outargs-buttons button {
+      margin: 5px;
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .outargs-buttons button:hover {
+      background-color: #0056b3;
+    }
+    .current-config {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+<h1>v2 - Dynamic OutArguments Experiment</h1>
+
+<div class="outargs-section">
+  <h3>OutArguments Configuration</h3>
+  <p>Experiment with different outArguments configurations:</p>
+  <div class="outargs-buttons">
+    <button id="config1">Patient Data</button>
+    <button id="config2">Analytics Data</button>
+    <button id="config3">Custom Metrics</button>
+  </div>
+  <div class="current-config" id="currentConfig">
+    Current outArguments: (none selected)
+  </div>
+</div>
+
+<div id="step1" class="step")>
+  Select your SMS message:
+  <select id="select1">
+    <option value="">Select an option</option>
+    <option value="someMessage">Some SMS</option>
+    <option value="anotherMessage">Another SMS</option>
+    <option value="thirdMessage">Third SMS</option>
+    <option value="unknownMessage">Unknown SMS</option>
+  </select>
+
+  <button id="toggleLastStep">Toggle Last Step</button>
+</div>
+<div id="step2" class="step">
+  Here's a second page with some info on it.
+</div>
+<div id="step3" class="step">
+  You chose the message:
+  <div id="message"></div>
+</div>
+<div id="step4" class="step">
+  Hey, here's a fourth step, just for you. Toggle this on or off from step
+  1.
+</div>
+</body>
+</html>

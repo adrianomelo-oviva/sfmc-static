@@ -1,0 +1,104 @@
+{
+  "workflowApiVersion": "1.1",
+  "metaData": {
+    "icon": "images/icon.png",
+    "category": "Insights"
+  },
+  "type": "Rest",
+  "lang": {
+    "en-US": {
+      "name": "Insight experiment",
+      "description": "Requests insights"
+    }
+  },
+  "arguments": {
+    "execute": {
+      "inArguments": [
+        {
+          "patientUserId": null
+        }
+      ],
+      "outArguments": [],
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_execute",
+      "useJwt":true,
+      "customerKey":"CustomActivityJWTKey",
+      "timeout": 10000,
+      "retryCount": 3,
+      "retryDelay": 1000,
+      "concurrentRequests": 5
+    }
+  },
+  "configurationArguments": {
+    "publish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_publish",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "validate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_validate",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "save": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_save",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "unpublish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_unpublish",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "stop": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_stop",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "testSave": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testSave",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "testPublish": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testPublish",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    },
+    "testValidate": {
+      "url": "https://eoc48mye7dsh09i.m.pipedream.net/_testValidate",
+      "useJwt":true,"customerKey":"CustomActivityJWTKey"
+    }
+  },
+  "schema": {
+    "arguments": {
+      "execute": {
+        "inArguments": [
+          {
+            "patientUserId": {
+              "dataType": "Text",
+              "direction": "in",
+              "access": "visible"
+            }
+          }
+        ],
+        "outArguments": [
+          {
+            "value": {
+              "dataType": "Number",
+              "direction": "out",
+              "access": "visible"
+            },
+            "value_decimal": {
+              "dataType": "Decimal",
+              "direction": "out",
+              "access": "visible"
+            },
+            "created_at": {
+              "dataType": "Date",
+              "direction": "out",
+              "access": "visible"
+            },
+            "is_present": {
+              "dataType": "Boolean",
+              "direction": "out",
+              "access": "visible"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
