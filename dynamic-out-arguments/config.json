@@ -2,13 +2,13 @@
   "workflowApiVersion": "1.1",
   "metaData": {
     "icon": "images/icon.png",
-    "category": "Insights"
+    "category": "Custom"
   },
   "type": "Rest",
   "lang": {
     "en-US": {
-      "name": "Insight experiment",
-      "description": "Requests insights"
+      "name": "Dynamic OutArguments Experiment",
+      "description": "Experiment with different outArguments configurations"
     }
   },
   "arguments": {
